@@ -11,9 +11,7 @@ const JobListings = ({ isHome = false }) => {
 
   useEffect(() => {
     const fetchJobs = async () => {
-      const ApiUrl = isHome
-        ? 'http://localhost:5000/jobs?_limit=3'
-        : 'http://localhost:5000/jobs'
+      const ApiUrl = isHome ? 'api/jobs?_limit=3' : 'api/jobs'
       try {
         const res = await fetch(ApiUrl)
         const data = await res.json()
@@ -48,4 +46,4 @@ const JobListings = ({ isHome = false }) => {
   )
 }
 
-export default JobListings
+  export default JobListings
