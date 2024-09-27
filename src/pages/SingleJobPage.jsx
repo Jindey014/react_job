@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react'
-import { Link, useLoaderData, useParams } from 'react-router-dom'
+import { Link, useLoaderData, useParams, useNavigate } from 'react-router-dom'
 import { FaArrowCircleLeft, FaMapMarker } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
-const SingleJobPage = ({ deleteJob }) => {
+const SingleJobPage = ({ deleteJobSubmit }) => {
   // const [job, setJob] = useState(null)
+  const navigate = useNavigate()
   const job = useLoaderData()
   const { id } = useParams()
 
-  const onDeleteClick =(jobsId)=>{
-      const confirm = window.confirm('Are you sure you want to deletee this job?')
+  const onDeleteClick = (jobsId) => {
+    const confirm = window.confirm('Are you sure you want to deletee this job?')
+
+    if (!confirm) return
+    deleteJobSubmit(jobsId)
+    toast.success('Job deleted sucessfully')
+    navigate('/jobs')
   }
 
   // useEffect(() => {
@@ -95,7 +102,7 @@ const SingleJobPage = ({ deleteJob }) => {
               <div className="bg-white p-6 rounded-lg shadow-md mt-6">
                 <h3 className="text-xl font-bold mb-6">Manage Job</h3>
                 <Link
-                  to={`/jobs/edit/${job.id}`}
+                  to={`/edit-job/${job.id}`}
                   className="bg-indigo-500 hover:bg-indigo-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
                 >
                   Edit Job

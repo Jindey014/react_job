@@ -7,9 +7,10 @@ import JobsPage from './pages/JobsPage'
 import SingleJobPage, { jobLoader } from './pages/SingleJobPage'
 import PageNotFound from './pages/PageNotFound'
 import AddJobPage from './pages/AddJobPage'
+import EditJobPage from './pages/EditJobPage'
 
 const App = () => {
-  //ADD NEW JOBS
+  //ADD NEW JOBS --THIS IS AN EXAMPLE OF PASSING A FUNCTION AS A PROP
   const addJob = async (newJob) => {
     const res = await fetch('api/jobs', {
       method: 'POST',
@@ -23,6 +24,20 @@ const App = () => {
   //DELETE JOB
   const deleteJob = async (id) => {
     console.log('delete', id)
+    const res = await fetch(`/api/jobs/${id}`, {
+      method: 'DELETE',
+    })
+    return
+  }
+  //UPDATE JOB
+  const updateJob = async (job) => {
+    const res = await fetch(`/api/jobs/${job.id}`, {
+      method: 'PUT',
+      header: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(job),
+    })
   }
 
   const router = createBrowserRouter([
@@ -40,12 +55,17 @@ const App = () => {
         },
         {
           path: '/jobs/:id',
-          element: <SingleJobPage deleteJob={deleteJob} />,
+          element: <SingleJobPage deleteJobSubmit={deleteJob} />,
           loader: jobLoader,
         },
         {
           path: '/add-job',
           element: <AddJobPage addJobSubmit={addJob} />,
+        },
+        {
+          path: '/edit-job/:id',
+          element: <EditJobPage updateJobSubmit={updateJob} />,
+          loader: jobLoader,
         },
         {
           path: '*',
